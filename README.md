@@ -18,7 +18,7 @@
 
 | Home (Grid + Busca) | Modal (Detalhes) | Página da Receita |
 |---|---|---|
-| ![home](docs/preview-home.png) | ![modal](docs/preview-modal.png) | ![receita](docs/preview-receita.png) |
+| ![home](assets/img/preview-home.jpg) | ![modal](assets/img/preview-modal.jpg) | ![receita](assets/img/preview-receita.jpg) |
 
 ---
 
