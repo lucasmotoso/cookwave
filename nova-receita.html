@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CookWave – Nova Receita</title>
+
+  <!-- Estilos base -->
+  <link rel="stylesheet" href="style/main.css" />
+  <link rel="stylesheet" href="style/header.css" />
+  <link rel="stylesheet" href="style/footer.css" />
+  <link rel="stylesheet" href="style/forms.css" />
+  <link rel="stylesheet" href="style/modal.css" />
+
+  <!-- Ícones / Fontes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/logo/favicon.png" type="image/png" sizes="32x32" />
+  <link rel="shortcut icon" href="assets/logo/favicon.png" type="image/png" />
+
+  <meta name="theme-color" content="#1b1b1b" />
+
+  <!-- Estilinho leve só para o preview (não mexe nos seus CSS globais) -->
+  <style>
+    .img-preview-wrap{
+      margin:10px 0 0; display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    }
+    #img-preview{
+      display:none; width:180px; height:120px; object-fit:cover; border-radius:12px;
+      box-shadow:0 10px 24px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.08);
+      background:rgba(0,0,0,.12);
+    }
+    #img-preview[src]{ display:block; }
+    .preview-note{ color:var(--form-sub); font-size:.95rem; }
+  </style>
+</head>
+<body>
+  <!-- Header dinâmico -->
+  <header id="header-placeholder"></header>
+
+  <main id="main-content" class="page-form">
+    <section class="form-card">
+      <h1>Nova Receita</h1>
+      <p class="muted">As receitas criadas aqui ficam <strong>salvas neste dispositivo</strong>.</p>
+
+      <form id="recipe-form">
+        <div class="grid-2">
+          <label>Nome
+            <input name="name" required placeholder="Ex.: Bolo de Fubá" />
+          </label>
+
+          <label>Categoria
+            <input name="category" placeholder="Ex.: Dessert" />
+          </label>
+
+          <label>Origem
+            <input name="area" placeholder="Ex.: Brazilian" />
+          </label>
+
+          <label>Tags (separadas por vírgula)
+            <input name="tags" placeholder="ex.: doce, café-da-manhã" />
+          </label>
+        </div>
+
+        <!-- ===== Imagem (arquivo ou URL) com preview ===== -->
+        <label for="img-file">Imagem (arquivo ou URL)</label>
+        <div class="file-input">
+          <input type="file" id="img-file" accept="image/*" class="visually-hidden" />
+          <button type="button" id="choose-file" class="btn">Escolher arquivo</button>
+          <span id="file-name" class="file-name">Nenhum arquivo escolhido</span>
+          <span class="muted sep">ou</span>
+          <input type="url" id="img-url" placeholder="https://exemplo.com/imagem.jpg" />
+        </div>
+
+        <div class="img-preview-wrap">
+          <img id="img-preview" alt="Pré-visualização da imagem" />
+          <span id="preview-note" class="preview-note">A pré-visualização aparece aqui.</span>
+        </div>
+        <!-- ===== /Imagem ===== -->
+
+        <fieldset class="ingredients">
+          <legend>Ingredientes</legend>
+          <div id="ing-list"></div>
+          <button type="button" id="add-ing" class="pill">+ Adicionar ingrediente</button>
+        </fieldset>
+
+        <label>Modo de preparo
+          <textarea name="instructions" rows="8" placeholder="Escreva o passo a passo..."></textarea>
+        </label>
+
+        <div class="actions">
+          <a class="btn ghost" href="index.html">Cancelar</a>
+          <button class="btn-primary" type="submit">Salvar</button>
+        </div>
+      </form>
+
+      <p id="form-success" class="success" hidden>
+        Receita salva! <a href="minhas-receitas.html">Ver Minhas Receitas</a>
+      </p>
+    </section>
+  </main>
+
+  <!-- Footer dinâmico -->
+  <footer id="footer-placeholder"></footer>
+
+  <!-- Modal dinâmico -->
+  <div id="modal-placeholder"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/includes.js" defer></script>
+  <script src="scripts/user_recipes.js" defer></script>
+  <script>
+    // ===== helpers =====
+    const $ = (s, r=document)=>r.querySelector(s);
+    const ingList   = $("#ing-list");
+    const addBtn    = $("#add-ing");
+    const fileInput = $("#img-file");
+    const chooseBtn = $("#choose-file");
+    const fileName  = $("#file-name");
+    const urlInput  = $("#img-url");
+    const preview   = $("#img-preview");
+    const previewNote = $("#preview-note");
+    let rows = 0;
+    let revokeUrl = null; // para liberar objectURL do arquivo
+
+    function addRow(ing="", mea="") {
+      const row = document.createElement("div");
+      row.className = "ing-row";
+      row.innerHTML = [
+        '<input placeholder="Ingrediente" class="ing" />',
+        '<input placeholder="Medida (ex.: 2 colheres)" class="mea" />',
+        '<button type="button" class="del" aria-label="Remover">✕</button>'
+      ].join("");
+      row.querySelector(".ing").value = ing;
+      row.querySelector(".mea").value = mea;
+      row.querySelector(".del").onclick = () => row.remove();
+      ingList.appendChild(row);
+      rows++;
+    }
+
+    addBtn.onclick = () => addRow();
+    for (let i=0;i<6;i++) addRow();
+
+    function fileToDataURL(file) {
+      return new Promise((res, rej) => {
+        const fr = new FileReader();
+        fr.onload = () => res(fr.result);
+        fr.onerror = rej;
+        fr.readAsDataURL(file);
+      });
+    }
+
+    // ===== preview helpers =====
+    function clearPreview(msg = "A pré-visualização aparece aqui.") {
+      if (revokeUrl) { URL.revokeObjectURL(revokeUrl); revokeUrl = null; }
+      preview.removeAttribute("src");
+      preview.style.display = "none";
+      previewNote.textContent = msg;
+    }
+    function showPreview(src, note = "Pré-visualização pronta.") {
+      preview.src = src;
+      preview.style.display = "block";
+      previewNote.textContent = note;
+    }
+    function debounce(fn, ms=400){ let t; return (...a)=>{clearTimeout(t); t=setTimeout(()=>fn(...a), ms);} }
+
+    // Botão que abre o seletor de arquivo
+    chooseBtn.onclick = () => fileInput.click();
+
+    // Preview quando escolher ARQUIVO
+    fileInput.addEventListener("change", () => {
+      fileName.textContent = (fileInput.files && fileInput.files[0]) ? fileInput.files[0].name : "Nenhum arquivo escolhido";
+      if (!(fileInput.files && fileInput.files[0])) { clearPreview(); return; }
+
+      // libera o objectURL antigo, se houver
+      if (revokeUrl) { URL.revokeObjectURL(revokeUrl); revokeUrl = null; }
+      const objUrl = URL.createObjectURL(fileInput.files[0]);
+      revokeUrl = objUrl;
+      showPreview(objUrl, "Prévia do arquivo selecionado.");
+    });
+
+    // Preview quando digitar URL
+    urlInput.addEventListener("input", debounce(()=>{
+      const url = urlInput.value.trim();
+      if (!url) { if (!fileInput.files.length) clearPreview(); return; }
+      // Se houver arquivo selecionado, mantemos o preview do arquivo (prioridade visual do arquivo)
+      if (fileInput.files && fileInput.files[0]) return;
+
+      // teste rápido carregando a imagem
+      const testImg = new Image();
+      testImg.onload = () => showPreview(url, "Prévia da URL informada.");
+      testImg.onerror = () => clearPreview("Não foi possível carregar a imagem da URL.");
+      testImg.src = url;
+    }, 500));
+
+    // ===== submit =====
+    document.getElementById("recipe-form").addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      const data = new FormData(e.target);
+      const name = (data.get("name") || "").toString().trim();
+      if (!name) return;
+
+      const rec = {
+        name,
+        category: (data.get("category") || "").toString().trim(),
+        area: (data.get("area") || "").toString().trim(),
+        tags: (data.get("tags") || "").toString().split(",").map(s=>s.trim()).filter(Boolean),
+        ingredients: [...ingList.querySelectorAll(".ing-row")].map(r => ({
+          ingredient: r.querySelector(".ing").value.trim(),
+          measure: r.querySelector(".mea").value.trim()
+        })).filter(x=>x.ingredient),
+        instructions: (data.get("instructions") || "").toString()
+      };
+
+      // prioridade: arquivo > URL
+      const file = fileInput.files && fileInput.files[0];
+      const url  = urlInput.value.trim();
+      if (file) rec.image = await fileToDataURL(file);
+      else if (url) rec.imageUrl = url;
+
+      window.UserRecipes.add(rec);
+      document.getElementById("form-success").hidden = false;
+
+      // reset
+      e.target.reset();
+      fileName.textContent = "Nenhum arquivo escolhido";
+      clearPreview();
+      ingList.innerHTML = "";
+      rows = 0;
+      for (let i=0;i<6;i++) addRow();
+    });
+  </script>
+</body>
+</html>

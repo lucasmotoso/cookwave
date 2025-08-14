@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CookWave – Favoritos</title>
+
+  <link rel="stylesheet" href="style/main.css" />
+  <link rel="stylesheet" href="style/header.css" />
+  <link rel="stylesheet" href="style/footer.css" />
+  <link rel="stylesheet" href="style/modal.css" />
+  <link rel="stylesheet" href="style/home.css" />
+  <link rel="stylesheet" href="style/favorites.css" />  <!-- NOVO -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <link rel="icon" href="assets/logo/favicon.png" type="image/x-icon" />
+  <meta name="theme-color" content="#1b1b1b" />
+</head>
+<body>
+  <header id="header-placeholder"></header>
+
+  <main id="main-content" role="main" class="favorites-page">
+    <section class="category-section" aria-labelledby="fav-title">
+      <div class="fav-head">
+        <h2 id="fav-title" class="section-title">
+          Seus Favoritos <span id="fav-count" class="count-badge">0</span>
+        </h2>
+
+        <div class="fav-tools">
+          <form id="fav-search" class="fav-search" role="search" aria-label="Buscar em favoritos">
+            <i class="fa fa-magnifying-glass" aria-hidden="true"></i>
+            <input id="fav-q" type="search" placeholder="Buscar por nome…" autocomplete="off" />
+          </form>
+
+          <select id="fav-sort" class="fav-select" aria-label="Ordenar">
+            <option value="name">Nome (A–Z)</option>
+            <option value="name_desc">Nome (Z–A)</option>
+            <option value="category">Categoria</option>
+            <option value="area">Origem</option>
+          </select>
+
+          <div class="fav-view">
+            <button id="fav-view-comfy" class="pill" type="button" aria-pressed="true" title="Visualização confortável">
+              Conforto
+            </button>
+            <button id="fav-view-compact" class="pill ghost" type="button" aria-pressed="false" title="Visualização compacta">
+              Compacto
+            </button>
+          </div>
+
+          <button id="fav-clear" class="btn-danger" type="button" title="Limpar todos os favoritos">
+            Limpar tudo
+          </button>
+        </div>
+      </div>
+
+      <!-- chips de categoria (somente as categorias presentes nos favoritos) -->
+      <div id="fav-cats" class="fav-cats" aria-label="Filtrar por categoria"></div>
+
+      <p id="fav-empty" class="muted" hidden>Você ainda não favoritou nenhuma receita.</p>
+      <div id="fav-grid" class="recipe-grid"></div>
+    </section>
+  </main>
+
+  <footer id="footer-placeholder"></footer>
+  <div id="modal-placeholder"></div>
+
+  <script src="scripts/includes.js" defer></script>
+  <script src="scripts/favorites.js" defer></script>
+  <script src="scripts/favorites_page.js" defer></script>
+</body>
+</html>

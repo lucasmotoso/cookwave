@@ -1,0 +1,30 @@
+<!-- components/modal.html -->
+<div class="modal-overlay hidden">
+  <div id="recipe-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-recipe-title">
+    <button class="modal-fav" id="modal-fav-btn" aria-label="Adicionar aos favoritos" aria-pressed="false">
+  <i class="fa-regular fa-heart"></i>
+</button>
+
+    <button class="modal-close" aria-label="Fechar modal">&times;</button>
+
+    <div class="modal-header">
+      <img id="modal-recipe-thumb" alt="Imagem da receita" />
+      <div>
+        <h2 id="modal-recipe-title"></h2>
+        <p id="modal-recipe-category"></p>
+      </div>
+    </div>
+
+<div class="modal-body">
+  <h3>Ingredientes</h3>
+  <ul id="modal-recipe-ingredients"></ul>
+
+  <!-- NOVO: botão para abrir a página local -->
+  <div class="modal-actions">
+    <a id="modal-open-page" class="modal-link">Ver na página</a>
+    <a id="modal-recipe-link" target="_blank" rel="noopener noreferrer" class="modal-link">
+      Ver fonte / vídeo
+    </a>
+  </div>
+</div>
+

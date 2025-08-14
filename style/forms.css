@@ -1,0 +1,86 @@
+:root{
+  --form-fg:#f5f7fa; --form-sub:#cbd5e1; --form-line:rgba(255,255,255,.08);
+  --form-card-1:#152a31; --form-card-2:#0f2126;
+}
+[data-theme="light"]{
+  --form-fg:#1f2937; --form-sub:#5b6b7a; --form-line:rgba(0,0,0,.08);
+  --form-card-1:#f7fafc; --form-card-2:#eef2f7;
+}
+
+/* ===== LAYOUT DA PÁGINA ===== */
+.page-form{
+  /* compensa header fixo e evita sobreposição */
+  margin-top: calc(var(--header-h, 72px));
+  padding: 28px 16px 56px;
+
+  /* altura mínima agradável + fundo suave (evita “brancão”) */
+  min-height: calc(100vh - var(--header-h, 72px));
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(255,255,255,.04) 0%, transparent 60%),
+    linear-gradient(180deg, var(--form-card-1), var(--form-card-2));
+}
+
+.form-card{
+  max-width: 920px;
+  margin: 8px auto 24px;   /* pequeno respiro sob o header */
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(255,255,255,.04) 0%, transparent 60%),
+    linear-gradient(180deg, var(--form-card-1), var(--form-card-2));
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.45), 0 0 0 1px var(--form-line);
+  color: var(--form-fg);
+}
+.form-card h1{ margin: 0 0 6px; }
+.form-card .muted{ color: var(--form-sub); margin-bottom: 12px; }
+
+/* ===== CAMPOS ===== */
+label{ display:block; margin: 10px 0; }
+input, textarea, select{
+  width: 100%; padding: .7rem .75rem; border-radius: 10px;
+  border:1px dashed var(--form-line);
+  background: rgba(255,255,255,.06); color: var(--form-fg);
+}
+textarea{ resize: vertical; }
+
+.grid-2{ display:grid; gap:10px; grid-template-columns: 1fr; }
+@media (min-width:760px){ .grid-2{ grid-template-columns: 1fr 1fr; } }
+
+/* ===== INPUT DE IMAGEM CUSTOM ===== */
+.visually-hidden{
+  position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden;
+  clip:rect(0 0 0 0); border:0;
+}
+.file-input{
+  display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+}
+.file-input .btn{ padding:.6rem .9rem; border-radius:10px; cursor:pointer; }
+.btn{ border:1px dashed var(--form-line); background: transparent; color: var(--form-fg); }
+.btn:hover{ background: rgba(255,255,255,.06); }
+.file-name{
+  color: var(--form-sub);
+  border:1px dashed var(--form-line);
+  padding:.5rem .7rem; border-radius:10px;
+  background: rgba(255,255,255,.06);
+}
+.file-input .sep{ margin:0 4px; }
+#img-url{ flex:1; min-width:260px; }
+
+/* ===== INGREDIENTES ===== */
+.ingredients legend{ font-weight:700; margin-bottom: 6px; }
+.ing-row{
+  display:grid; gap:8px; grid-template-columns: 1fr 1fr auto; margin-bottom: 8px;
+}
+.ing-row .del{
+  border:0; border-radius: 8px; width:40px; height: 42px;   /* alinha com altura dos inputs */
+  background: rgba(0,0,0,.28); color:#fff; cursor:pointer;
+}
+
+/* ===== AÇÕES ===== */
+.actions{ display:flex; gap:10px; justify-content:flex-end; margin-top: 12px; }
+.btn-primary{
+  padding:.6rem 1rem; border-radius:10px; border:0; color:#fff; font-weight:800;
+  background: linear-gradient(180deg, #c1492c, #e05b3c); cursor:pointer;
+}
+.btn.ghost{ padding:.6rem 1rem; border-radius:10px; }
+.success{ margin-top:10px; color:#46e0a5; }

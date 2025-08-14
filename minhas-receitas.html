@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CookWave – Minhas Receitas</title>
+
+  <!-- Estilos base -->
+  <link rel="stylesheet" href="style/main.css" />
+  <link rel="stylesheet" href="style/header.css" />
+  <link rel="stylesheet" href="style/footer.css" />
+  <link rel="stylesheet" href="style/home.css" />
+  <link rel="stylesheet" href="style/favorites.css" />  <!-- reaproveita o mesmo visual da Favoritos -->
+  <link rel="stylesheet" href="style/modal.css" />      <!-- evita “vazamento” do modal no rodapé -->
+
+  <!-- Ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/logo/favicon.png" type="image/png" sizes="32x32" />
+  <link rel="shortcut icon" href="assets/logo/favicon.png" type="image/png" />
+
+  <meta name="theme-color" content="#1b1b1b" />
+</head>
+<body>
+  <header id="header-placeholder"></header>
+
+  <main id="main-content" role="main" class="favorites-page">
+    <section class="category-section" aria-labelledby="mine-title">
+      <div class="fav-head">
+        <h2 id="mine-title" class="section-title">
+          Minhas Receitas <span id="mine-count" class="count-badge">0</span>
+        </h2>
+
+        <div class="fav-tools">
+          <!-- Busca -->
+          <form id="mine-search" class="fav-search" role="search" aria-label="Buscar em minhas receitas">
+            <i class="fa fa-magnifying-glass" aria-hidden="true"></i>
+            <input id="mine-q" type="search" placeholder="Buscar por nome…" autocomplete="off" />
+          </form>
+
+          <!-- Ordenação -->
+          <select id="mine-sort" class="fav-select" aria-label="Ordenar">
+            <option value="name">Nome (A–Z)</option>
+            <option value="name_desc">Nome (Z–A)</option>
+            <option value="category">Categoria</option>
+            <option value="area">Origem</option>
+          </select>
+
+          <!-- Visualização -->
+          <div class="fav-view">
+            <button id="mine-view-comfy" class="pill" type="button" aria-pressed="true" title="Visualização confortável">
+              Conforto
+            </button>
+            <button id="mine-view-compact" class="pill ghost" type="button" aria-pressed="false" title="Visualização compacta">
+              Compacto
+            </button>
+          </div>
+
+          <!-- Ações -->
+          <a class="btn-primary" href="nova-receita.html" data-icon="+">Nova</a>
+          <button id="mine-clear" class="btn-danger" type="button">Limpar tudo</button>
+        </div>
+      </div>
+
+      <!-- Chips de categoria (dinâmico com base nas suas receitas) -->
+      <div id="mine-cats" class="fav-cats" aria-label="Filtrar por categoria"></div>
+
+      <p id="mine-empty" class="muted" hidden>Você ainda não criou nenhuma receita.</p>
+      <div id="mine-grid" class="recipe-grid"></div>
+    </section>
+  </main>
+
+  <footer id="footer-placeholder"></footer>
+  <div id="modal-placeholder"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/includes.js" defer></script>
+  <script src="scripts/user_recipes.js" defer></script>
+  <script src="scripts/favorites.js" defer></script>
+  <script src="scripts/my_recipes_page.js" defer></script>
+</body>
+</html>

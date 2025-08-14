@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CookWave – Receita</title>
+
+    <!-- Preferir cores do sistema -->
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#1b1b1b" />
+
+    <!-- Anti-FOUC: aplica o tema salvo antes do paint -->
+    <script>
+      (function () {
+        try {
+          const keyCandidates = ["cw-theme", "theme", "cookwave-theme"];
+          for (const k of keyCandidates) {
+            const v = localStorage.getItem(k);
+            if (v) { document.documentElement.setAttribute("data-theme", v); break; }
+          }
+        } catch {}
+      })();
+    </script>
+
+    <!-- Performance: dicas de conexão -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://libretranslate.com" />
+
+    <!-- Estilos globais -->
+    <link rel="stylesheet" href="style/main.css" />
+    <link rel="stylesheet" href="style/header.css" />
+    <link rel="stylesheet" href="style/footer.css" />
+    <link rel="stylesheet" href="style/modal.css" />
+    <!-- Ícones -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Estilo desta página -->
+    <link rel="stylesheet" href="style/recipe.css" />
+
+    <link rel="icon" href="assets/logo/favicon.png" type="image/x-icon" />
+  </head>
+
+  <body>
+    <a href="#recipe-view" class="skip-link">Pular para conteúdo</a>
+
+    <header id="header-placeholder"></header>
+
+    <main id="main-content" class="recipe-page" role="main" aria-live="polite">
+      <nav class="recipe-breadcrumb">
+        <a href="index.html" class="back-link">← Voltar</a>
+        <!-- Fallback do toggle de tema (aparece se o do header não vier) -->
+        <button
+          id="recipe-theme-toggle"
+          class="btn-ghost"
+          title="Alternar tema"
+          aria-label="Alternar tema"
+        >
+          🌓
+        </button>
+      </nav>
+
+      <article id="recipe-view" class="recipe-view">
+        <div class="recipe-skeleton">
+          <div class="skel skel-img"></div>
+          <div class="skel skel-title"></div>
+          <div class="skel skel-sub"></div>
+          <div class="skel skel-block"></div>
+          <div class="skel skel-block"></div>
+        </div>
+      </article>
+    </main>
+
+    <footer id="footer-placeholder"></footer>
+
+    <div id="modal-placeholder"></div>
+
+    <!-- Scripts (ordem importante) -->
+    <script src="scripts/includes.js" defer></script>
+    <script src="scripts/user_recipes.js" defer></script>
+    <script src="scripts/favorites.js" defer></script>
+    <script src="scripts/translator.js" defer></script>
+    <script src="scripts/recipe.js" defer></script>
+
+    <noscript>
+      <p style="padding:1rem;text-align:center">
+        Ative o JavaScript para visualizar os detalhes da receita.
+      </p>
+    </noscript>
+  </body>
+</html>

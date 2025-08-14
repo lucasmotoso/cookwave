@@ -1,0 +1,107 @@
+/* style/home.css */
+:root{
+  --home-fg:#f5f7fa;
+  --home-sub:#cbd5e1;
+  --home-line:rgba(255,255,255,.08);
+  --home-accent:#c1492c;
+  --home-accent-2:#e05b3c;
+  --home-card-1:#152a31;
+  --home-card-2:#0f2126;
+}
+
+[data-theme="light"]{
+  --home-fg:#1f2937;
+  --home-sub:#5b6b7a;
+  --home-line:rgba(0,0,0,.08);
+  --home-card-1:#f7fafc;
+  --home-card-2:#eef2f7;
+}
+
+/* títulos */
+.section-title{ margin: 18px 0 12px; }
+
+/* ====== BUSCA ====== */
+.search-section{ padding: 8px 16px 18px; max-width: 1160px; margin: 0 auto; }
+.search-bar{
+  display: grid; grid-template-columns: auto 1fr auto; gap: 10px;
+  align-items: center;
+  border-radius: 999px; padding: 10px 12px;
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(255,255,255,.04) 0%, transparent 60%),
+    linear-gradient(180deg, var(--home-card-1), var(--home-card-2));
+  box-shadow: 0 12px 28px rgba(0,0,0,.35), 0 0 0 1px var(--home-line);
+}
+.search-bar i{ opacity:.8; margin-left: 8px; }
+#search-input{
+  width: 100%; border: 0; background: transparent; outline: none;
+  color: var(--home-fg); font-size: 1rem;
+}
+.btn-search{
+  padding:.6rem 1rem; border-radius: 999px; border:0; cursor:pointer;
+  background: linear-gradient(180deg, var(--home-accent), var(--home-accent-2));
+  color:#fff; font-weight:700;
+  box-shadow: 0 10px 20px rgba(193,73,44,.25), 0 1px 0 rgba(255,255,255,.2) inset;
+}
+.muted{ color: var(--home-sub); text-align:center; margin-top: 8px; }
+
+/* ====== CATEGORIAS ====== */
+.category-section{ padding: 8px 16px 20px; max-width: 1160px; margin: 0 auto; }
+.section-head{ display:flex; align-items:center; justify-content:space-between; gap: 12px; }
+.cat-actions{ display:flex; gap:8px; }
+.pill{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:8px 12px; border-radius: 999px; cursor: pointer; border: 1px dashed var(--home-line);
+  background: rgba(255,255,255,.06); color: var(--home-fg);
+  white-space: nowrap;
+  transition: transform .12s ease, background .12s ease;
+}
+.pill.ghost{ background: transparent; }
+.pill:hover{ transform: translateY(-1px); background: rgba(255,255,255,.1); }
+.pill img{ width:28px; height:28px; object-fit:cover; border-radius:50%; }
+.pill.active{ outline: 2px solid var(--home-accent); }
+
+.category-strip{
+  display:flex; gap:10px; overflow:auto; scroll-snap-type:x proximity; padding: 6px 2px 2px;
+}
+.category-strip .pill{ scroll-snap-align:center; }
+
+.category-results-wrap{ margin-top: 10px; }
+.section-subtitle{ margin: 0 0 8px; color: var(--home-sub); }
+
+/* ====== GRID DE RECEITAS ====== */
+.recipe-grid{
+  display: grid; gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.recipe-card{
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(255,255,255,.04) 0%, transparent 60%),
+    linear-gradient(180deg, var(--home-card-1), var(--home-card-2));
+  border-radius: 14px; overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0,0,0,.32), 0 0 0 1px var(--home-line);
+}
+.recipe-image{ width:100%; height:190px; object-fit:cover; display:block; }
+.recipe-info{ padding: 12px; color: var(--home-fg); }
+.recipe-info h3{ margin: 0 0 4px; font-size: 1.05rem; }
+.recipe-info p{ margin: 0 0 8px; color: var(--home-sub); }
+.recipe-button{
+  padding:.5rem .8rem; border:0; border-radius:10px; cursor:pointer;
+  background: linear-gradient(180deg, var(--home-accent), var(--home-accent-2));
+  color:#fff; font-weight:700;
+  box-shadow: 0 6px 16px rgba(193,73,44,.25), 0 1px 0 rgba(255,255,255,.2) inset;
+}
+/* Favoritos no card */
+.recipe-card{ position: relative; }
+.card-fav{
+  position: absolute; top: 10px; right: 10px;
+  width: 40px; height: 40px; border: 0; border-radius: 999px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.35);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(0,0,0,.28);
+  transition: transform .12s ease, background .12s ease, filter .12s ease;
+  z-index: 2;
+}
+.card-fav:hover{ transform: scale(1.06); background: rgba(0,0,0,.45); }
+.card-fav[aria-pressed="true"]{ background: linear-gradient(180deg, var(--home-accent), var(--home-accent-2)); }
+.card-fav[aria-pressed="true"] i{ filter: drop-shadow(0 2px 6px rgba(0,0,0,.25)); }

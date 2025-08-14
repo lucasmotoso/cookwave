@@ -1,0 +1,220 @@
+/* style/favorites.css */
+:root{
+  --fav-fg:#f5f7fa;
+  --fav-sub:#cbd5e1;
+  --fav-line:rgba(255,255,255,.08);
+  --fav-accent:#c1492c;
+  --fav-accent-2:#e05b3c;
+  --fav-card-1:#152a31;
+  --fav-card-2:#0f2126;
+}
+[data-theme="light"]{
+  --fav-fg:#1f2937;
+  --fav-sub:#5b6b7a;
+  --fav-line:rgba(0,0,0,.08);
+  --fav-card-1:#f7fafc;
+  --fav-card-2:#eef2f7;
+}
+
+.favorites-page{ padding: calc(28px + var(--header-h,0px)) 16px 56px; }
+
+.fav-head{
+  max-width: 1160px; margin: 0 auto 10px;
+  display: grid; gap: 12px;
+  grid-template-columns: 1fr;
+}
+.fav-tools{
+  display: grid; gap: 10px; align-items: center;
+  grid-template-columns: 1fr auto auto auto;
+}
+@media (min-width: 860px){
+  .fav-head{ grid-template-columns: 1fr; }
+  .fav-tools{ grid-template-columns: 1fr auto auto auto auto; }
+}
+
+/* badge com contagem */
+.count-badge{
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 34px; height: 24px; padding: 0 8px; margin-left: 8px;
+  border-radius: 999px; font-size: .9rem; font-weight: 800; line-height: 1;
+  color: #fff; background: linear-gradient(180deg, var(--fav-accent), var(--fav-accent-2));
+  box-shadow: 0 6px 12px rgba(193,73,44,.25);
+}
+
+/* busca */
+.fav-search{
+  display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center;
+  border-radius: 999px; padding: 10px 12px;
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(255,255,255,.04) 0%, transparent 60%),
+    linear-gradient(180deg, var(--fav-card-1), var(--fav-card-2));
+  box-shadow: 0 12px 28px rgba(0,0,0,.35), 0 0 0 1px var(--fav-line);
+}
+.fav-search i{ opacity:.8; margin-left: 8px; }
+#fav-q{
+  width: 100%; border: 0; background: transparent; outline: none;
+  color: var(--fav-fg); font-size: 1rem;
+}
+
+/* select + view + limpar */
+.fav-select{
+  border-radius: 10px; padding: .6rem .7rem; background: rgba(255,255,255,.08);
+  color: var(--fav-fg); border: 1px dashed var(--fav-line);
+}
+.pill{ display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px;
+  border:1px dashed var(--fav-line); background: rgba(255,255,255,.06); color: var(--fav-fg); cursor: pointer; }
+.pill.ghost{ background: transparent; }
+.pill[aria-pressed="true"]{ outline: 2px solid var(--fav-accent); }
+
+.btn-danger{
+  padding:.6rem 1rem; border-radius:10px; border:0; cursor:pointer;
+  background: linear-gradient(180deg, #9b1b1b, #b82727); color:#fff; font-weight:800;
+  box-shadow: 0 10px 20px rgba(155,27,27,.25), 0 1px 0 rgba(255,255,255,.2) inset;
+}
+
+.fav-cats{
+  max-width: 1160px; margin: 6px auto 10px; padding: 4px 2px;
+  display:flex; gap:10px; overflow:auto; scroll-snap-type:x proximity;
+}
+.fav-cats .pill{ scroll-snap-align:center; }
+
+.category-section{ max-width: 1160px; margin: 0 auto; }
+#fav-grid.recipe-grid{ margin-top: 8px; }
+
+/* modo compacto */
+#fav-grid.compact .recipe-image{ height: 140px; }
+#fav-grid.compact .recipe-info h3{ font-size: 1rem; }
+#fav-grid.compact .recipe-card{ border-radius: 12px; }
+/* =========================
+   Minhas Receitas — Botão + Nova (upgrade)
+   ========================= */
+
+/* layout do grupo de ações (deixa tudo alinhadinho no topo) */
+.favorites-page .fav-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+/* botão “+ Nova” mais glam—funciona no <a class="btn-primary"> atual */
+.favorites-page .btn-primary {
+  --btn-g1: #c1492c;
+  --btn-g2: #e05b3c;
+  --btn-shadow: 0 12px 20px rgba(193, 73, 44, .28);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+
+  padding: .7rem 1.05rem;
+  border: 0;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: .2px;
+  cursor: pointer;
+
+  background: linear-gradient(180deg, var(--btn-g1), var(--btn-g2));
+  box-shadow: var(--btn-shadow), 0 1px 0 rgba(255,255,255,.18) inset;
+
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0); /* evita blur no sheen em alguns browsers */
+  transition: transform .12s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+/* ícone + automático (se o texto começa com “+”) fica alinhadinho */
+.favorites-page .btn-primary::before {
+  content: attr(data-icon);
+  display: inline-block;
+  font-weight: 900;
+  line-height: 1;
+}
+.favorites-page .btn-primary[data-icon="+"] { padding-left: .9rem; }
+.favorites-page .btn-primary[data-icon="+"]::before { margin-right: .35rem; content: "+"; }
+
+/* brilho “sheen” passando ao hover */
+.favorites-page .btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 -45%;
+  width: 40%;
+  background: linear-gradient(120deg, transparent 0%,
+              rgba(255,255,255,.40) 50%, transparent 100%);
+  transform: skewX(-20deg);
+  opacity: 0;
+  transition: left .35s ease, opacity .35s ease;
+  pointer-events: none;
+}
+.favorites-page .btn-primary:hover::after {
+  left: 120%;
+  opacity: 1;
+}
+
+/* estados */
+.favorites-page .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 26px rgba(0,0,0,.28), 0 1px 0 rgba(255,255,255,.22) inset;
+}
+.favorites-page .btn-primary:active {
+  transform: translateY(0);
+  filter: saturate(1.05);
+}
+.favorites-page .btn-primary:focus-visible {
+  outline: 3px solid #ffb39f; /* foco acessível */
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(225, 128, 96, .25), var(--btn-shadow);
+}
+
+/* versão maior (se um dia quiser): <a class="btn-primary btn-lg">+ Nova</a> */
+.favorites-page .btn-primary.btn-lg { padding: .85rem 1.2rem; border-radius: 14px; }
+
+/* botão “Limpar tudo” combina com o novo look */
+.favorites-page .btn-danger {
+  --d1:#8d2d20; --d2:#b23a29;
+  color:#fff;
+  background: linear-gradient(180deg, var(--d1), var(--d2));
+  border: 0;
+  box-shadow: 0 8px 18px rgba(141,45,32,.25);
+}
+.favorites-page .btn-danger:hover { transform: translateY(-1px); }
+.favorites-page .btn-danger:focus-visible { outline: 3px solid rgba(255,150,135,.55); outline-offset: 2px; }
+
+/* select e pills do modo de visualização combinando com o novo botão */
+.favorites-page .fav-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.65));
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  padding: .55rem .9rem;
+  box-shadow: 0 4px 14px rgba(0,0,0,.08);
+}
+[data-theme="dark"] .favorites-page .fav-select {
+  color:#e8eef3;
+  background: linear-gradient(180deg, rgba(19,40,46,.95), rgba(19,40,46,.8));
+  border-color: rgba(255,255,255,.08);
+}
+
+/* pills Conforto/Compacto */
+.favorites-page .pill {
+  padding: .55rem .85rem;
+  border-radius: 999px;
+  border: 1px dashed rgba(0,0,0,.1);
+  background: rgba(255,255,255,.65);
+  box-shadow: 0 4px 12px rgba(0,0,0,.06);
+}
+[data-theme="dark"] .favorites-page .pill {
+  border-color: rgba(255,255,255,.1);
+  background: rgba(255,255,255,.06);
+}
+.favorites-page .pill.active,
+.favorites-page .pill[aria-pressed="true"] {
+  color:#fff;
+  border-color: transparent;
+  background: linear-gradient(180deg, #c1492c, #e05b3c);
+  box-shadow: 0 10px 22px rgba(193,73,44,.25);
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CookWave - Receitas Retrô</title>
+
+    <!-- Preferir cores do sistema (melhora formulários/scrollbars) -->
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#1b1b1b" />
+
+    <!-- Anti-FOUC: aplica o tema salvo ANTES do primeiro paint -->
+    <script>
+      (function () {
+        try {
+          const keys = ["cw-theme", "theme", "cookwave-theme"];
+          for (const k of keys) {
+            const v = localStorage.getItem(k);
+            if (v) { document.documentElement.setAttribute("data-theme", v); break; }
+          }
+        } catch {}
+      })();
+    </script>
+
+    <!-- Performance: dicas de conexão para CDNs e LibreTranslate -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://libretranslate.com" />
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="style/main.css" />
+    <link rel="stylesheet" href="style/header.css" />
+    <link rel="stylesheet" href="style/footer.css" />
+    <link rel="stylesheet" href="style/modal.css" />
+    <link rel="stylesheet" href="style/home.css" />
+
+    <!-- Ícones / Fontes -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" href="assets/logo/favicon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="assets/logo/favicon.png" type="image/x-icon" />
+
+    <!-- Pré-carrega artes do hero para reduzir blur inicial -->
+    <link rel="preload" as="image" href="img/hero-light.png" />
+    <link rel="preload" as="image" href="img/hero-dark.png" />
+  </head>
+
+  <body>
+    <a href="#receitas" class="skip-link">Pular para receitas</a>
+
+    <!-- Header dinâmico -->
+    <header id="header-placeholder" role="banner"></header>
+
+    <main id="main-content" role="main">
+      <!-- Hero -->
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <h1 id="hero-title" class="hero-title">
+            CookWave <span class="hero-icon" aria-hidden="true">🍳</span>
+          </h1>
+          <p class="hero-subtitle">
+            Receitas que despertam <strong>memórias</strong>.<br />
+            <span class="highlighted">
+              Sinta o sabor da nostalgia em cada prato!
+            </span>
+          </p>
+          <a href="#buscar" class="hero-button">Explorar</a>
+        </div>
+      </section>
+
+      <!-- Busca -->
+      <section id="buscar" class="search-section" aria-labelledby="buscar-titulo">
+        <h2 id="buscar-titulo" class="section-title">Buscar receitas</h2>
+
+        <form class="search-bar" id="search-form" role="search" aria-label="Buscar receitas">
+          <i class="fa fa-magnifying-glass" aria-hidden="true"></i>
+          <input
+            id="search-input"
+            type="search"
+            placeholder="Digite o nome da receita (ex.: lasagna)"
+            autocomplete="off"
+            aria-label="Campo de busca por nome da receita"
+          />
+          <button class="btn-search" type="submit">Buscar</button>
+        </form>
+
+        <div id="search-results" class="recipe-grid" aria-live="polite"></div>
+        <p id="search-empty" class="muted" hidden>Nenhum resultado encontrado.</p>
+      </section>
+
+      <!-- Categorias -->
+      <section id="categorias" class="category-section" aria-labelledby="categorias-titulo">
+        <div class="section-head">
+          <h2 id="categorias-titulo" class="section-title">Categorias</h2>
+          <div class="cat-actions">
+            <button id="cat-left" class="pill ghost" aria-label="Rolar categorias para a esquerda">⟵</button>
+            <button id="cat-right" class="pill ghost" aria-label="Rolar categorias para a direita">⟶</button>
+          </div>
+        </div>
+
+        <div id="category-strip" class="category-strip" tabindex="0" aria-label="Lista de categorias"></div>
+
+        <div class="category-results-wrap">
+          <h3 class="section-subtitle" id="cat-current" hidden></h3>
+          <div id="category-results" class="recipe-grid"></div>
+        </div>
+      </section>
+
+      <!-- Em Alta (carrossel) -->
+      <section class="trending-section" aria-labelledby="trending-title">
+        <div class="trending-head">
+          <h2 id="trending-title" class="section-title">Em Alta</h2>
+          <div class="carousel-nav">
+            <button class="carousel-btn prev" aria-label="Anterior" id="trend-prev">‹</button>
+            <button class="carousel-btn next" aria-label="Próximo" id="trend-next">›</button>
+          </div>
+        </div>
+        <div class="carousel" id="trending-carousel">
+          <div class="carousel-track" id="trending-track"></div>
+        </div>
+      </section>
+
+      <!-- Receitas aleatórias -->
+      <section class="recipe-section" id="receitas" aria-labelledby="receitas-titulo">
+        <h2 id="receitas-titulo" class="section-title">Receitas Aleatórias</h2>
+        <div id="recipe-list" class="recipe-grid" aria-live="polite">
+          <!-- Cards injetados via JS -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer dinâmico -->
+    <footer id="footer-placeholder" role="contentinfo"></footer>
+
+    <!-- Modal dinâmico -->
+    <div id="modal-placeholder"></div>
+
+    <!-- Scripts (ordem importante) -->
+<script src="scripts/includes.js" defer></script>
+<script src="scripts/modal.js" defer></script>          <!-- <- ADICIONE ESTA LINHA -->
+<script src="scripts/favorites.js" defer></script>
+<script src="scripts/translator.js" defer></script>
+<script src="scripts/api.js" defer></script>            <!-- (na página da receita use recipe.js) -->
+
+    <noscript>
+      <p style="padding:1rem;text-align:center">
+        O CookWave precisa de JavaScript habilitado para funcionar corretamente.
+      </p>
+    </noscript>
+  </body>
+</html>

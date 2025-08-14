@@ -1,0 +1,186 @@
+/* ===============  BASE / RESET  =============== */
+.hidden { display: none !important; }
+:root{
+  --cw-bg-1:#1a3039;       /* fundo cartão */
+  --cw-bg-2:#13262d;
+  --cw-fg:#f5f7fa;         /* texto */
+  --cw-sub:#cbd5e1;        /* subtítulo */
+  --cw-line:rgba(255,255,255,.08);
+  --cw-accent:#c1492c;     /* laranja retrô */
+  --cw-accent-2:#e05b3c;
+  --cw-shadow:rgba(0,0,0,.55);
+}
+
+/* ===============  OVERLAY  =============== */
+.modal-overlay{
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(10,14,15,.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: cw-overlay-in .18s ease-out;
+}
+
+/* ===============  CARTÃO DO MODAL  =============== */
+#recipe-modal{
+  width: min(920px, calc(100% - 32px));
+  max-height: min(88vh, 100%);
+  overflow: hidden;                 /* conteúdo rola dentro do body */
+  border-radius: 16px;
+  color: var(--cw-fg);
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(255,255,255,.04) 0%, transparent 60%),
+    linear-gradient(180deg, var(--cw-bg-1) 0%, var(--cw-bg-2) 100%);
+  box-shadow:
+    0 22px 60px var(--cw-shadow),
+    0 0 0 1px rgba(255,255,255,.06),
+    0 0 0 2px rgba(193,73,44,.15) inset;
+  outline: 1px solid rgba(255,255,255,.04);
+  animation: cw-pop-in .22s cubic-bezier(.18,.89,.32,1.28);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  position: relative;
+}
+
+/* botão fechar */
+.modal-close{
+  position: absolute; top: 10px; right: 12px;
+  width: 40px; height: 40px; border: 0; border-radius: 10px;
+  background: rgba(0,0,0,.25);
+  color: var(--cw-fg); font-size: 24px; line-height: 40px;
+  cursor: pointer;
+  transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,.25);
+}
+.modal-close:hover{ transform: scale(1.06); background: rgba(0,0,0,.35); }
+.modal-close:active{ transform: scale(.98); }
+.modal-close:focus-visible{ outline: 2px solid var(--cw-accent-2); outline-offset: 2px; }
+
+/* ===============  CABEÇALHO  =============== */
+.modal-header{
+  display: grid; gap: 18px;
+  grid-template-columns: 1fr;
+  padding: 20px 20px 16px 20px;
+  border-bottom: 1px dashed var(--cw-line);
+}
+.modal-header img{
+  width: 100%; max-height: 360px; object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.35);
+  outline: 1px solid rgba(255,255,255,.06);
+}
+#modal-recipe-title{
+  font-family: "Cinzel Decorative", ui-serif, Georgia, serif;
+  font-weight: 700; letter-spacing: .3px;
+  font-size: clamp(1.35rem, 1vw + 1rem, 1.9rem);
+  margin: 2px 0 6px;
+  text-shadow: 0 1px 0 rgba(0,0,0,.35);
+}
+#modal-recipe-category{
+  color: var(--cw-sub);
+  font-size: .95rem;
+}
+
+/* layout lado-a-lado em telas médias+ */
+@media (min-width: 760px){
+  .modal-header{ grid-template-columns: 1.05fr 1fr; align-items: start; }
+}
+
+/* ===============  CORPO / LISTA  =============== */
+.modal-body{
+  padding: 16px 20px 20px;
+  overflow: auto;                   /* rolagem suave apenas no body */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.25) transparent;
+}
+.modal-body h3{
+  margin: 2px 0 10px; font-size: 1.05rem; letter-spacing: .2px;
+}
+#modal-recipe-ingredients{
+  list-style: none; padding: 0; margin: 0 0 12px 0;
+  display: grid; gap: 8px;
+  grid-template-columns: 1fr;
+}
+#modal-recipe-ingredients li{
+  position: relative; padding-left: 18px;
+  color: var(--cw-fg);          /* usa a cor do tema */
+  font-size: .98rem;
+}
+
+#modal-recipe-ingredients li::before{
+  content: "◆";
+  position: absolute; left: 0; top: 2px;
+  font-size: .65rem;
+  color: var(--cw-accent);
+  text-shadow: 0 0 6px rgba(193,73,44,.45);
+}
+@media (min-width: 720px){
+  #modal-recipe-ingredients{ grid-template-columns: 1fr 1fr; }
+}
+
+/* link fonte/vídeo como botão */
+.modal-link{
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: .5rem;
+  padding: .65rem 1rem;
+  border-radius: 10px;
+  background: linear-gradient(180deg, var(--cw-accent) 0%, var(--cw-accent-2) 100%);
+  color: #fff; text-decoration: none; font-weight: 600;
+  box-shadow: 0 10px 20px rgba(193,73,44,.25), 0 1px 0 rgba(255,255,255,.2) inset;
+  transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+}
+.modal-link:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+.modal-link:active{ transform: translateY(0); }
+.modal-link:focus-visible{ outline: 2px solid #fff; outline-offset: 2px; }
+
+/* ===============  ANIMAÇÕES  =============== */
+@keyframes cw-overlay-in{
+  from{ opacity: 0; } to{ opacity: 1; }
+}
+@keyframes cw-pop-in{
+  from{ transform: translateY(10px) scale(.98); opacity: .6; }
+  to{   transform: translateY(0)     scale(1);   opacity: 1;  }
+}
+
+/* ===============  MODO ESCURO  =============== */
+[data-theme="dark"] #recipe-modal{
+  --cw-bg-1:#0f1d22; --cw-bg-2:#0b161a; --cw-fg:#e8edf2; --cw-sub:#a8b2bd;
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.65),
+    0 0 0 1px rgba(255,255,255,.05),
+    0 0 0 2px rgba(193,73,44,.12) inset;
+}
+[data-theme="dark"] .modal-overlay{
+  background: rgba(5,8,9,.72);
+  backdrop-filter: blur(5px);
+}
+
+/* ===============  TEMA CLARO (se usar)  =============== */
+[data-theme="light"] #recipe-modal{
+  --cw-bg-1:#f9fafb; --cw-bg-2:#eef2f7; --cw-fg:#1f2937; --cw-sub:#5b6b7a;
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.2),
+    0 0 0 1px rgba(0,0,0,.06),
+    0 0 0 2px rgba(193,73,44,.15) inset;
+}
+[data-theme="light"] .modal-overlay{ background: rgba(0,0,0,.4); }
+
+/* ===============  COMPATIBILIDADE LEGADA  =============== */
+/* Se você tinha uma .modal que ocupava a tela toda, neutralizamos aqui: */
+.modal{ position: static; inset: auto; width: auto; height: auto; display: block; z-index: auto; background: none; box-shadow: none; }
+.modal-actions{
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+/* Favoritos no modal */
+.modal-fav{
+  position: absolute; top: 10px; right: 58px;
+  width: 40px; height: 40px; border: 0; border-radius: 10px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.25); color: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,.25);
+  transition: transform .12s ease, background .12s ease;
+}
+.modal-fav:hover{ transform: scale(1.06); background: rgba(0,0,0,.35); }
+.modal-fav[aria-pressed="true"]{
+  background: linear-gradient(180deg, var(--cw-accent), var(--cw-accent-2));
+}
